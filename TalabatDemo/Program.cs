@@ -1,5 +1,7 @@
 
+using DomainLayer.Contracts;
 using Microsoft.EntityFrameworkCore;
+using PersistenceLayer;
 using PersistenceLayer.Data;
 
 namespace TalabatDemo
@@ -21,8 +23,18 @@ namespace TalabatDemo
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            builder.Services.AddScoped<IDataSeeding, DataSeeding>();
+
+
 
             var app = builder.Build();
+
+            //Manual Inhection
+            using var scope = app.Services.CreateScope();
+            var seedObj = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
+            seedObj.DataSeed();
+
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
