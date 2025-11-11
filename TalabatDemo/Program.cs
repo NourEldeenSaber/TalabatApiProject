@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using PersistenceLayer;
 using PersistenceLayer.Data;
 using PersistenceLayer.Repositories;
+using ServiceLayer;
+using ServiceLayer.MappingProfiles;
 
 namespace TalabatDemo
 {
@@ -25,8 +27,15 @@ namespace TalabatDemo
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            #region Register user defiend Service
+
             builder.Services.AddScoped<IDataSeeding, DataSeeding>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //builder.Services.AddAutoMapper(p => p.AddProfile(new ProductProfile()));
+            //builder.Services.AddAutoMapper(typeof(ServiceLayerAssemblyReference).Assembly);
+            builder.Services.AddAutoMapper((X) => { } ,typeof(ServiceLayerAssemblyReference).Assembly);
+
+            #endregion
 
 
 
