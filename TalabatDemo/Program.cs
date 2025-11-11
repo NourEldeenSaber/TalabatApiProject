@@ -3,6 +3,7 @@ using DomainLayer.Contracts;
 using Microsoft.EntityFrameworkCore;
 using PersistenceLayer;
 using PersistenceLayer.Data;
+using PersistenceLayer.Repositories;
 
 namespace TalabatDemo
 {
@@ -23,7 +24,9 @@ namespace TalabatDemo
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
             builder.Services.AddScoped<IDataSeeding, DataSeeding>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
 
@@ -32,7 +35,7 @@ namespace TalabatDemo
             //Manual Inhection
             using var scope = app.Services.CreateScope();
             var seedObj = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
-            seedObj.DataSeed();
+            seedObj.DataSeedAsync();
 
 
 
