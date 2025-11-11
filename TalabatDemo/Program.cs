@@ -49,6 +49,7 @@ namespace TalabatDemo
             seedObj.DataSeedAsync();
 
 
+            #region Configure the Http request pipline
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -61,10 +62,11 @@ namespace TalabatDemo
 
             app.UseAuthorization();
 
-
+            app.UseStaticFiles();
             app.MapControllers();
 
-            app.Run();
+            app.Run(); 
+            #endregion
         }
     }
 }
