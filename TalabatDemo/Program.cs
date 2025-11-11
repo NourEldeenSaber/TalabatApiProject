@@ -3,6 +3,10 @@ using DomainLayer.Contracts;
 using Microsoft.EntityFrameworkCore;
 using PersistenceLayer;
 using PersistenceLayer.Data;
+using PersistenceLayer.Repositories;
+using ServiceAbstractionLayer;
+using ServiceLayer;
+using ServiceLayer.MappingProfiles;
 
 namespace TalabatDemo
 {
@@ -23,7 +27,17 @@ namespace TalabatDemo
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            #region Register user defiend Service
+
             builder.Services.AddScoped<IDataSeeding, DataSeeding>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //builder.Services.AddAutoMapper(p => p.AddProfile(new ProductProfile()));
+            //builder.Services.AddAutoMapper(typeof(ServiceLayerAssemblyReference).Assembly);
+            builder.Services.AddAutoMapper((X) => { } ,typeof(ServiceLayerAssemblyReference).Assembly);
+            builder.Services.AddScoped<IServiceManager, ServiceManager>();
+
+            #endregion
 
 
 
@@ -32,9 +46,10 @@ namespace TalabatDemo
             //Manual Inhection
             using var scope = app.Services.CreateScope();
             var seedObj = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
-            seedObj.DataSeed();
+            seedObj.DataSeedAsync();
 
 
+            #region Configure the Http request pipline
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -47,10 +62,11 @@ namespace TalabatDemo
 
             app.UseAuthorization();
 
-
+            app.UseStaticFiles();
             app.MapControllers();
 
-            app.Run();
+            app.Run(); 
+            #endregion
         }
     }
 }
