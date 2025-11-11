@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PersistenceLayer;
 using PersistenceLayer.Data;
 using PersistenceLayer.Repositories;
+using ServiceAbstractionLayer;
 using ServiceLayer;
 using ServiceLayer.MappingProfiles;
 
@@ -34,6 +35,7 @@ namespace TalabatDemo
             //builder.Services.AddAutoMapper(p => p.AddProfile(new ProductProfile()));
             //builder.Services.AddAutoMapper(typeof(ServiceLayerAssemblyReference).Assembly);
             builder.Services.AddAutoMapper((X) => { } ,typeof(ServiceLayerAssemblyReference).Assembly);
+            builder.Services.AddScoped<IServiceManager, ServiceManager>();
 
             #endregion
 
