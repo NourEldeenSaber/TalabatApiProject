@@ -22,9 +22,9 @@ namespace ServiceLayer
 
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllProductAsync(int? brandId, int? typeId , ProductSortingOptions sortOption)
+        public async Task<IEnumerable<ProductDto>> GetAllProductAsync(ProductQueryParams queryParams)
         {
-            var spec = new ProductWithBrandAndTypeSpiecifications(brandId,typeId,sortOption); // include ProductType and ProductBrand
+            var spec = new ProductWithBrandAndTypeSpiecifications(queryParams); // include ProductType and ProductBrand
 
             var products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(spec);
             var productDtos = _mapper.Map<IEnumerable<ProductDto>>(products);

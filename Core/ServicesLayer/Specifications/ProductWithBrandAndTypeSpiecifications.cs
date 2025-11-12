@@ -6,15 +6,15 @@ namespace ServiceLayer.Specifications
     internal class ProductWithBrandAndTypeSpiecifications : BaseSpecifications<Product,int>
     {
         //Get All Products
-        public ProductWithBrandAndTypeSpiecifications(int? brandId, int? typeId , ProductSortingOptions sortOption) 
-            : base(p=> (!brandId.HasValue || p.BrandId == brandId) &&
-            (! typeId.HasValue || p.TypeId == typeId))
+        public ProductWithBrandAndTypeSpiecifications(ProductQueryParams queryParams) 
+            : base(p=> (!queryParams.brandId.HasValue || p.BrandId == queryParams.brandId) &&
+            (!queryParams.typeId.HasValue || p.TypeId == queryParams.typeId))
         {
             // where(p=>p.brandId == brandId && p.typeId == typeId)
             AddInclude(p => p.ProductType);
             AddInclude(p => p.ProductBrand);
 
-            switch (sortOption) {
+            switch (queryParams.sortOption) {
                 case ProductSortingOptions.NameAsc:
                     AddOrderBy(p => p.Name);
                     break;
