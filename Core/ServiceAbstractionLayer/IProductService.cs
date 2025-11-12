@@ -1,11 +1,12 @@
-﻿using Shared.DTOS;
+﻿using Shared;
+using Shared.DTOS;
 
 namespace ServiceAbstractionLayer
 {
     public interface IProductService
     {
         // Get All Products
-        Task<IEnumerable<ProductDto>> GetAllProductAsync(int? brandId , int? typeId);
+        Task<IEnumerable<ProductDto>> GetAllProductAsync(int? brandId , int? typeId , ProductSortingOptions sortOption);
 
         // Get Product By Id
         Task<ProductDto> GetProductByIdAsync(int id);

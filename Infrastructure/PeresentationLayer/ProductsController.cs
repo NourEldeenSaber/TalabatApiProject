@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceAbstractionLayer;
+using Shared;
 using Shared.DTOS;
 using System.Threading.Tasks;
 
@@ -11,9 +12,9 @@ namespace PeresentationLayer
     {
         // Get All Products
         [HttpGet] // Get :: BaseUrl/api/Products
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts(int? brandId , int? typeId)
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts(int? brandId , int? typeId , ProductSortingOptions sortOption)
         {
-            var products = await _serviceManager.ProductService.GetAllProductAsync(brandId,typeId);
+            var products = await _serviceManager.ProductService.GetAllProductAsync(brandId,typeId, sortOption);
             return Ok(products);
         }
 

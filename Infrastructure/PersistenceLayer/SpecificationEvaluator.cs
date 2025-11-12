@@ -10,18 +10,24 @@ namespace PersistenceLayer
                                                                                                                where TEntity : BaseEntity<TKey>
         {
             var query = inputQuery;
-            if(specifications.Criteria != null)
-            {
-                query = query.Where(specifications.Criteria);
-            }
-            if(specifications.IncludeExpressions is not null && specifications.IncludeExpressions.Count > 0)
-            {
-                //foreach (var include in specifications.IncludeExpressions) {
-                //    query.Include(include);
-                //}
 
-                query = specifications.IncludeExpressions.Aggregate(query,(current,includeExpression) => current.Include(includeExpression));
+            if(specifications.Criteria != null)
+                query = query.Where(specifications.Criteria);
+
+            if (specifications.OrderBy is not null)
+            {
+                query = query.OrderBy(specifications.OrderBy);
             }
+            if (specifications.OrderByDescending is not null)
+            {
+                query = query.OrderByDescending(specifications.OrderByDescending);
+            }
+
+            if (specifications.IncludeExpressions is not null && specifications.IncludeExpressions.Count > 0)
+                query = specifications.IncludeExpressions.Aggregate(query,(current,includeExpression) => current.Include(includeExpression));
+            
+            
+           
 
             return query;
         }

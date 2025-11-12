@@ -20,5 +20,23 @@ namespace ServiceLayer.Specifications
             IncludeExpressions.Add(includeExpression);
         }
 
+
+        #region Ordering
+        public Expression<Func<TEntity, object>> OrderBy { get; private set; }
+
+        public Expression<Func<TEntity, object>> OrderByDescending { get; private set; }
+
+        protected void AddOrderBy(Expression<Func<TEntity, object>> OrderByExpression)
+        {
+            OrderBy = OrderByExpression;
+        }
+        protected void AddOrderByDescending(Expression<Func<TEntity, object>> OrderByDescendingExpression)
+        {
+            OrderByDescending = OrderByDescendingExpression;
+        }
+
+
+        #endregion
+
     }
 }
