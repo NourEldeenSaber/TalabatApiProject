@@ -19,14 +19,29 @@ namespace PersistenceLayer.Repositories
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
             => await _context.Set<TEntity>().ToListAsync();
-        
+
+
         public async Task<TEntity?> GetByIdAsync(TKey id)
             => await _context.Set<TEntity>().FindAsync(id);
-        
+
         public void Remove(TEntity entity)
             => _context.Set<TEntity>().Remove(entity);
 
         public void Update(TEntity entity)
             => _context.Set<TEntity>().Update(entity);
+
+        #region With Specifications
+
+        public async Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity, TKey> specifications)
+        {
+            return await SpecificationEvaluator.CreateQuery(_context.Set<TEntity>(),specifications).ToListAsync();
+        }
+        public async Task<TEntity?> GetByIdAsync(ISpecifications<TEntity, TKey> specifications)
+        {
+            return await SpecificationEvaluator.CreateQuery(_context.Set<TEntity>(), specifications).FirstOrDefaultAsync();
+        }
+        #endregion
+
+
     }
 }
