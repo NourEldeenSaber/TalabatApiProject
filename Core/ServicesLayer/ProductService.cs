@@ -8,7 +8,7 @@ using Shared.DTOS;
 
 namespace ServiceLayer
 {
-    public class ProductService(IUnitOfWork _unitOfWork , IMapper _mapper) : IProductService
+    public class ProductService(IUnitOfWork _unitOfWork, IMapper _mapper) : IProductService
     {
         public async Task<IEnumerable<BrandDto>> GetAllBrandsAsync()
         {
@@ -21,9 +21,9 @@ namespace ServiceLayer
 
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllProductAsync()
+        public async Task<IEnumerable<ProductDto>> GetAllProductAsync(int? brandId, int? typeId)
         {
-            var spec = new ProductWithBrandAndTypeSpiecifications(); // include ProductType and ProductBrand
+            var spec = new ProductWithBrandAndTypeSpiecifications(brandId,typeId); // include ProductType and ProductBrand
 
             var products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(spec);
             var productDtos = _mapper.Map<IEnumerable<ProductDto>>(products);

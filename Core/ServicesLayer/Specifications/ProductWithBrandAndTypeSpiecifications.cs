@@ -5,8 +5,11 @@ namespace ServiceLayer.Specifications
     internal class ProductWithBrandAndTypeSpiecifications : BaseSpecifications<Product,int>
     {
         //Get All Products
-        public ProductWithBrandAndTypeSpiecifications() : base(null!)
+        public ProductWithBrandAndTypeSpiecifications(int? brandId, int? typeId) 
+            : base(p=> (!brandId.HasValue || p.BrandId == brandId) &&
+            (! typeId.HasValue || p.TypeId == typeId))
         {
+            // where(p=>p.brandId == brandId && p.typeId == typeId)
             AddInclude(p => p.ProductType);
             AddInclude(p => p.ProductBrand);
         }

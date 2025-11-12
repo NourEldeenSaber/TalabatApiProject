@@ -11,9 +11,9 @@ namespace PeresentationLayer
     {
         // Get All Products
         [HttpGet] // Get :: BaseUrl/api/Products
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts(int? brandId , int? typeId)
         {
-            var products = await _serviceManager.ProductService.GetAllProductAsync();
+            var products = await _serviceManager.ProductService.GetAllProductAsync(brandId,typeId);
             return Ok(products);
         }
 
